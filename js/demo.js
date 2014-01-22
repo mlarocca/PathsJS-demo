@@ -27,6 +27,7 @@ require([
               headers: {'Content-Type': 'application/json'}, 
               processData: false})
           .done( function ( data ) {
+            console.log(data)
             data = JSON.parse(data);
             ractive.animate({
               "countries": data,
