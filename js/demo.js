@@ -26,9 +26,10 @@ require([
       $.ajax({url: dataset, 
               headers: {'Content-Type': 'application/json'}, 
               processData: false})
-          .done( function ( data ) {
-            console.log(data)
-            data = JSON.parse(data);
+          .done(function (data) {
+            if (typeof data === 'String') {
+              data = JSON.parse(data);
+            }
             ractive.animate({
               "countries": data,
               'expanded': util.initArray(0, data.length)
