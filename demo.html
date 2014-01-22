@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pathjs</title>  </head>
+    <link rel="stylesheet" type="text/css" href="css/demo.css">
+  <body>
+    <div id='pie'></div>
+    
+    <script id='myTemplate' type='text/ractive'>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">Pie Chart</h2>
+        </div>
+        <label for='dataset-select'>Dataset</label>
+        <select name='dataset-select' value='{{selectedDataset}}' on-change='loadData'>
+          {{#datasets}}
+            <option value='{{.["filename"]}}'>{{.["label"]}}</option>
+          {{/datasets}}
+        </select>
+
+        <div class="panel-body">
+          <p class="alert alert-info">Here is a pie chart example. Sectors are clickable.</p>
+
+          <svg width=375 height=400>
+            <g transform="translate(200, 200)">
+              {{# Pie({center: center, r: r, R: R, data: countries, accessor: accessor, colors: colors}) }}
+                {{# curves:num }}
+                  <g transform="translate({{ move(sector.centroid, expanded[num]) }})">
+                    <linearGradient id = "grad-{{ num }}">
+                      <stop stop-color = "{{ color_string(color) }}" offset = "0%"/>
+                      <stop stop-color = "{{ lighten(color) }}" offset = "100%"/>
+                    </linearGradient>
+                    <path on-click="expand" d="{{ sector.path.print() }}" fill="url(#grad-{{ num }})" />
+                    <text text-anchor="middle" transform="translate({{ point(sector.centroid) }})">{{ item.name }}</text>
+                  </g>
+                {{/ curves }}
+              {{/ end of pie}}
+            </g>
+          </svg>
+
+          {{# countries: num }}
+            {{# expanded[num] == 1}}
+              <div class="country-info">
+                <h4>{{ name }}</h4>
+                <p>Population: <span class="label label-info">{{ population }}</span></p>
+              </div>
+            {{/ end if }}
+          {{/ countries }}
+        </div>
+      </div>
+    </script>    
+    <script data-main="js/demo" src="js/require.js"></script>
+
+  </body>
+</html>
